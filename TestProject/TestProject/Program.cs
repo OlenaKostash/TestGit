@@ -15,6 +15,7 @@ namespace TestProject
             if (isParseblX && isParseblY)
             {
                 int sum = 0;
+
                 if (x > y)
                    sum = CalculateSum(x, y);
                 else if (y > x)
