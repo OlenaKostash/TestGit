@@ -7,8 +7,6 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            Console.ReadKey();
 
             int x, y;
             Console.WriteLine("Enter a value for x");
