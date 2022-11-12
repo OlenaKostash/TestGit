@@ -1,107 +1,171 @@
-﻿using System.Net.Security;
+﻿using System;
+using System.Net.Security;
 
 
 namespace TestProject
 {
+    public enum SortAlgorithmType
+    {
+        Selection,
+        Bubble,
+        Insertion
+    }
+
+    public enum OrderBy
+    { 
+        Asc,
+        Desc
+    }
     internal class Program
     {
         static void Main(string[] args)
         {
-            #region 1,2,4 Paragraph
-            Random random = new Random();
-            List<int> sorseArray = new List<int>(); 
-            for(int i = 0; i < 2; i++)
-            {   
-                sorseArray.Add(random.Next(0, 20));
-                Console.WriteLine("Used number " + sorseArray[i]);            
-            }         
+            int[] array = { 10, 14, 4, 12, 53 };
+            Console.WriteLine("array before sort:");
+            PrintArray(array);
 
-            Console.WriteLine($"max number from {sorseArray[0]} and {sorseArray[1]}"
-                + " is " + MaxNumber(sorseArray[0], sorseArray[1]));
-            Console.WriteLine($"min number from {sorseArray[0]} and {sorseArray[1]}"
-               + " is " + MinNumber(sorseArray[0], sorseArray[1]));
-            Console.WriteLine();
-            #endregion
+            var sortOrder = default(OrderBy);
+            Console.WriteLine("select a sorting direction: -a (Ascending order) or -d (Descending order)");
+            var inputString = Console.ReadLine();
+            if(inputString == "-a")
+                sortOrder = OrderBy.Asc;
+            else if (inputString == "-d")
+                sortOrder = OrderBy.Desc;
+            else
+                Console.WriteLine("incorrect sorting parameter, array will be sort by Ascending order");
 
-            #region 3 Paragraph
-            int sum;
-            bool resultFromSum = TrySumIfOdd(sorseArray[0], sorseArray[1],out sum);
-            Console.WriteLine($"{resultFromSum}: the sum between " +
-                $"{sorseArray[0]} and {sorseArray[1]} is {sum}");
-            Console.WriteLine();
-            #endregion
+            var array1 = CopyArray(array);
+            Console.WriteLine("array sort Selection:");
+            Sort(array1, SortAlgorithmType.Selection, sortOrder);
+            PrintArray(array1);
 
-            #region extra
-            Console.WriteLine("Enter any string");
-            string x = Console.ReadLine();
+            var array2 = CopyArray(array);
+            Console.WriteLine("array sort Bubble:");
+            Sort(array2, SortAlgorithmType.Bubble, sortOrder);
+            PrintArray(array2);
 
-            bool isParseblX = false;
-            int n;
-            do
-            {
-                Console.WriteLine("Enter a value for n");  
-                isParseblX = Int32.TryParse(Console.ReadLine(), out n);
-            }
-            while (!isParseblX);
-
-            for (int i = 0; i < n; i++)
-            {
-                Console.WriteLine(x);
-            }
-
-            #endregion
+            var array3 = CopyArray(array);
+            Console.WriteLine("array sort Insertion:");
+            Sort(array3, SortAlgorithmType.Insertion, sortOrder);
+            PrintArray(array3);
 
             Console.ReadKey();
         }
 
-        #region 1,2,4 Paragraph
-        static int MaxNumber(int num1, int num2)
+        public static void Sort(int[] array, SortAlgorithmType algorithm, OrderBy sortOrder)
         { 
-            return Math.Max(num1, num2);
+            switch(algorithm)
+            {
+                case SortAlgorithmType.Selection:
+                    SelectionSort(array, sortOrder);
+                    break;
+                case SortAlgorithmType.Bubble:
+                    BubbleSort(array, sortOrder);
+                    break;
+                case SortAlgorithmType.Insertion:
+                    InsertionSort(array, sortOrder);
+                    break;
+            }
         }
 
-        static int MaxNumber(int num1, int num2, int num3)
+        public static void PrintArray(int[] array)
         {
-            return Math.Max(num1, Math.Max(num2, num3));
+            foreach (int item in array)
+                Console.WriteLine(item);
         }
 
-        static int MaxNumber(int num1, int num2, int num3, int num4)
+        private static int[] CopyArray(int[] array) 
         {
-            return Math.Max(num1, Math.Max(num2, Math.Max(num3, num4)));
-        }
+            var arrayLength = array.Length;
+            int[] copyArray = new int[arrayLength];
 
-        static int MinNumber(int num1, int num2)
+            for (int i = 0; i < arrayLength; i++)
+                copyArray[i] = array[i];
+
+            return copyArray;
+        }
+        private static void SelectionSort(int[] array, OrderBy sortOrder)
         {
-            return Math.Min(num1, num2);
+            var arrayLength = array.Length;
+            for (int i = 0; i < arrayLength - 1; i++)
+            {
+                var index = i;
+                for (int j = i + 1; j < arrayLength; j++)
+                {
+                    if(sortOrder == OrderBy.Asc)
+                    {
+                        if (array[j] < array[index])
+                            index = j;
+                    }
+                    else
+                    {
+                        if (array[j] > array[index])
+                            index = j;
+                    }      
+                }
+                var tempVar = array[index];
+                array[index] = array[i];
+                array[i] = tempVar;
+            }
         }
-
-        static int MinNumber(int num1, int num2, int num3)
+        private static void BubbleSort(int[] array, OrderBy sortOrder)
         {
-            return Math.Min(num1, Math.Min(num2, num3));
+            int temp = 0;
+            var arrayLength = array.Length;
+            for (int i = 0; i < arrayLength; i++)
+            {
+                for (int j = 0; j < arrayLength - 1; j++)
+                {
+                    if (sortOrder == OrderBy.Asc)
+                    { if (array[j] > array[j + 1])
+                        {
+                            temp = array[j + 1];
+                            array[j + 1] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                    else
+                    {
+                        if (array[j] < array[j + 1])
+                        {
+                            temp = array[j + 1];
+                            array[j + 1] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }     
+            }
         }
-
-        static int MinNumber(int num1, int num2, int num3, int num4)
+        private static void InsertionSort(int[] array, OrderBy sortOrder)
         {
-            return Math.Min(num1, Math.Min(num2, Math.Min(num3, num4)));
+            var arrayLength = array.Length;
+            int key, j;
+            for (int i = 1; i < arrayLength; i++)
+            {
+                key = array[i];
+                j = i - 1;
+
+                if (sortOrder == OrderBy.Asc)
+                {
+                    while (j >= 0 && array[j] > key)
+                    {
+                        array[j + 1] = array[j];
+                        j = j - 1;
+                    }
+                }
+                else
+                {
+                    while (j >= 0 && array[j] < key)
+                    {
+                        array[j + 1] = array[j];
+                        j = j - 1;
+                    }
+                }
+                
+                array[j + 1] = key;
+            }
         }
-        #endregion
-
-        #region 3 Paragraph
-        static bool TrySumIfOdd(int num1, int num2, out int sum)
-        {
-            sum = 0;
-
-            for (int i = Math.Min(num1, num2)+1; i < Math.Max(num1, num2);i++)
-                sum = sum + i;
-
-            if (sum % 2 == 0)
-                return false;
-            else
-                return true; 
-        }
-        #endregion
-
-
-
     }
+       
 }
+ 
