@@ -44,6 +44,7 @@ namespace TestProject
             Sort(array2, SortAlgorithmType.Bubble, sortOrder);
             PrintArray(array2);
 
+
             var array3 = CopyArray(array);
             Console.WriteLine("array sort Insertion:");
             Sort(array3, SortAlgorithmType.Insertion, sortOrder);
