@@ -5,92 +5,101 @@ namespace TestProject
     {
         static void Main(string[] args)
         {
-            #region 1,2,4 Paragraph
-            Random random = new Random();
-            List<int> sorseArray = new List<int>();
-                for (int i = 0; i < 2; i++)
-                {
-                    sorseArray.Add(random.Next(0, 20));
-                    Console.WriteLine("Used number " + sorseArray[i]);
-                }
+            Console.WriteLine("Enter the first string");
+            string str1 = Console.ReadLine();
 
-            Console.WriteLine($"max number from {sorseArray[0]} and {sorseArray[1]}"
-                + " is " + MaxNumber(sorseArray[0], sorseArray[1]));
-            Console.WriteLine($"min number from {sorseArray[0]} and {sorseArray[1]}"
-               + " is " + MinNumber(sorseArray[0], sorseArray[1]));
-            Console.WriteLine();
-            #endregion
+            Console.WriteLine("Enter the second string");
+            string str2 = Console.ReadLine();
 
-            #region 3 Paragraph
-            int sum;
-            bool resultFromSum = TrySumIfOdd(sorseArray[0], sorseArray[1], out sum);
-            Console.WriteLine($"{resultFromSum}: the sum between " +
-                $"{sorseArray[0]} and {sorseArray[1]} is {sum}");
-            Console.WriteLine();
-            #endregion
+            bool resultOfComparison = Compare(str1, str2);
+            Console.WriteLine($"The result of strings comparison is: {resultOfComparison}");
 
-            #region extra
-            Console.WriteLine("Enter any string");
-            string x = Console.ReadLine();
+            Console.WriteLine("Enter the string for analazing method");
+            string strAnalize = Console.ReadLine();
+            var (alphabeticChars, digits, specialCharacters) = Analyze(strAnalize);
+            Console.WriteLine($"string : {strAnalize} includes {alphabeticChars} alphabetic chars, {digits} digits, {specialCharacters} other special characters");
 
-            bool isParseblX = false;
-            int n;
-            do
+            Console.WriteLine("Enter the string for sorting method");
+            string strSort = Console.ReadLine();
+            Console.WriteLine(Sort(strSort));
+
+            Console.WriteLine("Enter the string for chek the Duplicate method");
+            string strDuplicate = Console.ReadLine();
+            var arrayOfDuplicateChar = Duplicate(strDuplicate);
+            if (arrayOfDuplicateChar.Count > 0)
+                Console.WriteLine("Dublicated chars:");
+            foreach (var item in arrayOfDuplicateChar)
             {
-                Console.WriteLine("Enter a value for n");
-                isParseblX = Int32.TryParse(Console.ReadLine(), out n);
-            }
-            while (!isParseblX);
-
-            for (int i = 0; i < n; i++)
-            {
-                Console.WriteLine(x);
+                Console.WriteLine(item);
             }
 
-            #endregion
         }
 
-        #region 1,2,4 Paragraph
-        static int MaxNumber(int num1, int num2)
+        static bool Compare(string str1, string str2)
         {
-            return Math.Max(num1, num2);
-        }
-        static int MaxNumber(int num1, int num2, int num3)
-        {
-            return Math.Max(num1, Math.Max(num2, num3));
-        }
-        static int MaxNumber(int num1, int num2, int num3, int num4)
-        {
-            return Math.Max(num1, Math.Max(num2, Math.Max(num3, num4)));
-        }
-        static int MinNumber(int num1, int num2)
-        {
-            return Math.Min(num1, num2);
-        }
-        static int MinNumber(int num1, int num2, int num3)
-        {
-            return Math.Min(num1, Math.Min(num2, num3));
-        }
-        static int MinNumber(int num1, int num2, int num3, int num4)
-        { 
-            return Math.Min(num1, Math.Min(num2, Math.Min(num3, num4)));
-        }
-        #endregion
-
-        #region 3 Paragraph
-        static bool TrySumIfOdd(int num1, int num2, out int sum)
-        {
-            sum = 0;
-
-            for (int i = Math.Min(num1, num2) + 1; i < Math.Max(num1, num2); i++)
-                sum = sum + i;
-
-            if (sum % 2 == 0)
+            
+            var charArr1 = str1.ToCharArray();
+            var charArr2 = str2.ToCharArray();
+            int maxStrLength = Math.Max(str1.Length, str2.Length);
+            if (string.IsNullOrEmpty(str1) || string.IsNullOrEmpty(str2))
+            {
                 return false;
+            }
             else
-                return true;
+            {
+                for (int i = 0; i < maxStrLength; i++)
+                {
+                    if (charArr1[i] != charArr2[i])
+                        return false;
+                }
+            }           
+            return true;
         }
-        #endregion
+
+        static (int alphabeticChars, int digits, int specialCharacters) Analyze(string inputStr)
+        {
+            int alphabeticChars = 0;
+            int digits = 0;
+            int specialCharacters = 0;
+
+            for (int i = 0; i < inputStr.Length; i++)
+            {
+                if (char.IsLetter(inputStr, i))
+                    alphabeticChars++;
+                else if(char.IsDigit(inputStr, i))
+                    digits++;
+                else
+                    specialCharacters++;
+            }
+    
+            return (alphabeticChars, digits, specialCharacters);
+        }
+
+        static string Sort(string inputStr)
+        {
+            var lowerStr = inputStr.ToLower();
+            char[] characters = lowerStr.ToArray();
+            Array.Sort(characters);
+            return new string(characters);
+        }
+
+        static List<char> Duplicate(string inputStr)
+        {
+            List<char> list = new List<char>();
+
+            var lowerStr = inputStr.ToLower();
+            char[] characters = lowerStr.ToArray();
+ 
+            var groups = characters.GroupBy(v => v);
+            foreach (var ch in groups)
+            {
+                if (ch.Count() > 1)
+                    list.Add(ch.Key);
+            }
+
+            return list;
+        }
+
     }
 }
 
