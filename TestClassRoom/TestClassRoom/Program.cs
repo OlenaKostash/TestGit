@@ -1,39 +1,59 @@
-﻿using RandomNameGeneratorLibrary;
-using System.Text;
+﻿
+using TestProject;
 
 namespace TestClassRoom
 {
-    internal partial class Program
+    internal class Program
     {
-
         static void Main(string[] args)
         {
-            var continueProg = true;
-            do 
+            int capacity;
+            Console.WriteLine("Enter Capacity of Stack :");
+            bool isParsebl = int.TryParse(Console.ReadLine(), out capacity);
+            if (!isParsebl)
             {
-                Console.WriteLine("Choose operation (-g) - generate, (-s) - search, (-bs) -binary search, (-out) - exit, (-p) - print all, (-e) - edit, (-c) - create:");
+                Console.WriteLine("Invalid number");
+                return;
+            }
+
+            MyStack<string> stack = new MyStack<string>(capacity);
+            var continueProg = true;
+            do
+            {
+                Console.WriteLine("Choose operation (-pu) -Push, (-po) - Pop, (-cl) - Clear, " +
+                    "(-ct) - Count, (-pe) - Peek, -(co) - CopyTo(arr), (-out) - exit");
                 string input = Console.ReadLine();
-                var storage = new PhonesStorage();
                 switch (input)
                 {
-                    case "-g":
-                        RanRandomGeneration();
-                        storage.OrderedByLastFirstNamePhone();
+                    case "-pu":
+                        Console.WriteLine("Enter String to Push :");
+                        stack.Push(Console.ReadLine());
                         break;
-                    case "-c":
-                        storage.Save(new PhoneRecord());
+                    case "-po":
+                        string result = stack.Pop();
+                        if (result != null)
+                            Console.WriteLine("Delete Element :" + result);
+                        else
+                            Console.WriteLine("Stack Underflow !");
                         break;
-                    case "-p":
-                        storage.PrintAll();
+                    case "-cl":
+                        stack.ClearStack();
                         break;
-                    case "-e":
-                        storage.Edit(int.Parse(Console.ReadLine()));
+                    case "-ct":
+                        int resultCount = stack.CountStack();
+                        Console.WriteLine($"Stack include {resultCount} element");
                         break;
-                    case "-s":
-                        storage.Search();
+                    case "-pe":
+                        string resultTop = stack.Peek();
+                        if (resultTop != null)
+                            Console.WriteLine($"Top element is {resultTop}");
+                        else
+                            Console.WriteLine("Stack is empty");
                         break;
-                    case "-bs":
-                        storage.BinarySearch(int.Parse(Console.ReadLine()));
+                    case "-co":
+                        string[] resultArray = new string[capacity];
+                        stack.CopyStackToArray(resultArray);
+                        Console.WriteLine("Stack has been copied to array");
                         break;
                     case "-out":
                         continueProg = false;
@@ -43,23 +63,6 @@ namespace TestClassRoom
                 }
             }
             while (continueProg);
-            
-        }
-        private static void RanRandomGeneration()
-        {
-            var placeGenerator = new PersonNameGenerator();
-            var randomNumberGenerator = new Random();
-            var storage = new PhonesStorage();
-            
-            for (var i = 0; i < 10; i++)
-            {
-                var newRecord = new PhoneRecord(placeGenerator.GenerateRandomFirstName(),
-                    placeGenerator.GenerateRandomLastName(),
-                    $"{randomNumberGenerator.Next(38010, 38099)}" +
-                        $"{randomNumberGenerator.Next(1111111, 9999999)}");
-                storage.Save(newRecord);
-            }
-      
         }
     }
 }
