@@ -4,21 +4,40 @@
     {
         static void Main(string[] args)
         {
-            // Data source
-            string[] names = { "Bill", "Steve", "James", "Mohan" };
 
-            // LINQ Query 
-            var myLinqQuery = from name in names
-                              where name.Contains('a')
-                              select name;
-            var myLinqQuery1 = from name in names
-                               where name.Contains('l')
-                               select name;
-            
+                var startingDeck = from s in Suits()
+                                   from r in Ranks()
+                                   select new { Suit = s, Rank = r };
 
-            // Query execution
-            foreach (var name in myLinqQuery1)
-                Console.Write(name + " ");
+                // Display each card that we've generated and placed in startingDeck in the console
+                foreach (var card in startingDeck)
+                {
+                    Console.WriteLine(card);
+                }  
+        }
+        static IEnumerable<string> Suits()
+        {
+            yield return "clubs";
+            yield return "diamonds";
+            yield return "hearts";
+            yield return "spades";
+        }
+
+        static IEnumerable<string> Ranks()
+        {
+            yield return "two";
+            yield return "three";
+            yield return "four";
+            yield return "five";
+            yield return "six";
+            yield return "seven";
+            yield return "eight";
+            yield return "nine";
+            yield return "ten";
+            yield return "jack";
+            yield return "queen";
+            yield return "king";
+            yield return "ace";
         }
     }
 }

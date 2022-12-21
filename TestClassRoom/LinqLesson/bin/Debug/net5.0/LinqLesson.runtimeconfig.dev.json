@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\olena\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\olena\\.nuget\\packages"
+    ]
+  }
+}

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Study\\TestClassroom\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "C:\\Users\\olena\\Downloads\\LinqLesson\\ConsoleApp1\\ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "C:\\Study\\TestClassroom\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectPath": "C:\\Users\\olena\\Downloads\\LinqLesson\\ConsoleApp1\\ConsoleApp1.csproj",
       "packagesPath": "C:\\Users\\olena\\.nuget\\packages\\",
-      "outputPath": "C:\\Study\\TestClassroom\\ConsoleApp1\\obj\\",
+      "outputPath": "C:\\Users\\olena\\Downloads\\LinqLesson\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\olena\\AppData\\Roaming\\NuGet\\NuGet.Config",
